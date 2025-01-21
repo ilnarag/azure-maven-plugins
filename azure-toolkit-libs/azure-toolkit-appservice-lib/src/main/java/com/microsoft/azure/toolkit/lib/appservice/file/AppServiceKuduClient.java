@@ -237,7 +237,7 @@ public class AppServiceKuduClient implements IFileClient, IProcessClient {
     }
 
     public void killProcess(final int id) {
-        kuduService.killProcess(id).block();
+        this.kuduService.killProcess(host, id).block();
     }
 
     @Host("{$host}")
@@ -330,7 +330,8 @@ public class AppServiceKuduClient implements IFileClient, IProcessClient {
         Mono<Response<ExtensionInfo>> installOrUpdatePackage(@HostParam("$host") String host, @PathParam("id") String id);
 
         @Delete("/api/processes/{id}")
-        Mono<Void> killProcess(int id);
+        @ExpectedResponses({502})
+        Mono<Void> killProcess(@HostParam("$host") String host, @PathParam("id") int id);
     }
 
     @Data
